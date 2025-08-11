@@ -20,13 +20,13 @@ pipeline {
                 sh 'docker version'
             }
         }
-        
+/*     
         stage('3. Docker Build') {
             steps {
                 sh 'docker build -t ex01-app:latest .'
             }
         }
-
+/*
         stage('4. Docker Push') {
             steps {
                 withCredentials([usernamePassword(
@@ -40,6 +40,15 @@ pipeline {
                     docker push $DOCKERHUB_USERNAME/ex02-app:latest
                     '''
                 }
+            }
+        }
+*/
+        stage('5. Deploy to K3s') {
+            steps {
+                sh '''
+                export KUBECONFIG=/home/vagrant/.kube/config
+                kubectl apply -f k8s-deployment.yaml
+                '''
             }
         }
     }
